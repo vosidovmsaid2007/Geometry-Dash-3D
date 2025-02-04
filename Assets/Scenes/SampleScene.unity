@@ -394,7 +394,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 10
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!65 &919132148787354349
 BoxCollider:
@@ -421,8 +421,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ebe36a87b3e73547a3164846bb523bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 8
-  rotationSpeed: 90
+  currentMoveSpeed: 5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 256
+  playerSprite: {fileID: 543450652994224209}
+  sprite: {fileID: 0}
+  speedValues:
+  - 5
+  - 10
+  jumpForce: 10
+  rotationSpeed: 5
+  groundCheckRadius: 0
+  shipGravityScale: 0
+  cubeGravityScale: 0
 --- !u!23 &1711813856272268094
 MeshRenderer:
   m_ObjectHideFlags: 0
