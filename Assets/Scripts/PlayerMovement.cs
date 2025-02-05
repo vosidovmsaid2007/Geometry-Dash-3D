@@ -1,53 +1,34 @@
 ﻿using UnityEngine;
 
-
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 1f, jumpForce = 10f;
-    [SerializeField] private float fallMultuplier = 2.5f, lowJumpMultiplier = 2f;
-
     private Rigidbody rb;
-    private bool doJump = false;
-    private bool isJumping = false;
 
-    void Awake()
+    void Start()
     {
-        rb = transform.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-        if(Input.GetButtonDown("Jump") && !isJumping){
-            doJump = true;
-            isJumping = false;
+        // Vector3 vel = rb.velocity;
+        // vel.x = 5;
+        // rb.velocity = vel;
+
+        if(Physics.Raycast(transform.position, Vector3.down, GetComponent<BoxCollider>().size.y / 2 + 0.4f))
+        {
+            Quaternion rot = transform.rotation;
+            rot.z = Mathf.Round(rot.z / 90) * 90;
+            transform.rotation = rot;
+
+            if(Input.GetMouseButtonDown(0))
+            {
+                rb.velocity = Vector3.zero;
+                rb.AddForce(Vector2.up * 55000);
+            }
+            else{
+                transform.Rotate(Vector3.back * 5f);
+            }
         }
     }
-
-    void FixedUpdate()
-    {
-        Vector3 moveVect = Vector3.forward;
-        moveVect = moveVect.normalized * moveSpeed * Time.deltaTime;
-
-        rb.MovePosition(transform.position + moveVect);
-
-        if(doJump){
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            doJump = false;
-        }
-
-        if(rb.velocity.y < 0){
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultuplier - 1) * Time.deltaTime;
-        }
-        else if (rb.velocity.y > 0 && !Input.GetButton("Jump")){
-            rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-    }
-
-    void OnCollisionEnter(Collision other){
-        if(other.gameObject.CompareTag("Ground")){
-            isJumping = false;
-        }
-    }
-
-    
 }
